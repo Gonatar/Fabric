@@ -1,0 +1,26 @@
+#ifndef FABRICITEM_H
+#define FABRICITEM_H
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class FabricItem {
+    protected:
+        string name;
+
+    public:
+    FabricItem();
+    FabricItem(const string& name);
+    FabricItem(const FabricItem& other);
+
+    virtual ~FabricItem();
+
+    virtual void displayInfo() const = 0;
+    virtual void use() const = 0;
+
+    string getName() const;
+    void setName(const string& name);
+};
+
+#endif
