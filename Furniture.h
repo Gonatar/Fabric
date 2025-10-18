@@ -23,6 +23,7 @@ class Furniture: public FabricItem{
     
     virtual void displayInfo() const override;
     virtual void use() const override;
+    virtual FabricItem* clone() const override;
     
     string getType() const;
     int getHeight() const;

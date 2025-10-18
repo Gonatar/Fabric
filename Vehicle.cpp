@@ -32,6 +32,10 @@ void Vehicle::use() const {
     cout << "Using vehicle: " << brand << " " << model << " with license plate: " << stateNumber << endl;
 }
 
+FabricItem* Vehicle::clone() const {
+    return new Vehicle(*this);
+}
+
 string Vehicle::getBrand() const { return brand; };
 string Vehicle::getModel() const { return model; };
 string Vehicle::getStateNumber() const { return stateNumber; };

@@ -7,7 +7,7 @@ using namespace std;
 
 class FabricItem {
     protected:
-        string name;
+    string name;
 
     public:
     FabricItem();
@@ -21,6 +21,7 @@ class FabricItem {
 
     string getName() const;
     void setName(const string& name);
+    virtual FabricItem* clone() const = 0;
 };
 
 #endif

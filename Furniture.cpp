@@ -37,6 +37,10 @@ void Furniture::use() const {
     cout << "Using furniture: " << name << " - " << type << endl;
 }
 
+FabricItem* Furniture::clone() const {
+    return new Furniture(*this);
+}
+
 string Furniture::getType() const { return type; }
 int Furniture::getHeight() const { return height; }
 int Furniture::getWidth() const { return width; }
