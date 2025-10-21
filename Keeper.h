@@ -20,13 +20,17 @@ class Keeper{
     ~Keeper();
 
     void addItem(FabricItem* item);
+
     void removeItem(int index);
-    void display() const;
+    void removeItemByType(int index, const string& type);
+    void displayAll() const;
+    void displayByType(const string& type) const;
     void find(const string& name) const;
     int getCount() const;
+    int getCountByType(const string& type) const;
 
     void Save(const string& filename) const;
-    void Load(const string& filename) const;
+    void Load(const string& filename);
 
     FabricItem* operator[](int index);
 };

@@ -19,7 +19,7 @@ class Vehicle: public FabricItem{
     virtual void displayInfo() const override;
     virtual void use() const override;
     virtual FabricItem* clone() const override;
-    
+
     string getBrand() const;
     string getModel() const;
     string getStateNumber() const;

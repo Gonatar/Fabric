@@ -14,7 +14,7 @@ void Menu::run() {
             case 3: VehicleOper(); break;
             case 4: SearchOper(); break;
             case 5: FileOper(); break;
-            case 6: library.display(); break;
+            case 6: library.displayAll(); break;
             case 0: cout << "Sayonara!" << endl; break;
         }
         
@@ -76,25 +76,26 @@ void Menu::FurnitureOper() {
             break;
         }
         case 2: {
-            if (library.getCount() == 0) {
-                cout << "Library is empty!" << endl;
+            int furnitureCount = library.getCountByType("Furniture");
+            if (furnitureCount == 0) {
+                cout << "No furniture items found!" << endl;
                 break;
             }
             
-            library.display();
-            cout << "Enter item number to remove: ";
-            int index = getInput(1, library.getCount()) - 1;
+            library.displayByType("Furniture");
+            cout << "Enter furniture number to remove (1-" << furnitureCount << "): ";
+            int index = getInput(1, furnitureCount);
             
             try {
-                library.removeItem(index);
-                cout << "Item removed successfully!" << endl;
+                library.removeItemByType(index, "Furniture");
+                cout << "Furniture removed successfully!" << endl;
             } catch (const exception& e) {
-                cout << "Error: " << e.what() << endl;
+                cout << "Error" << endl;
             }
             break;
         }
         case 3:
-            library.display();
+            library.displayByType("Furniture");
             break;
     }
 }
@@ -131,25 +132,26 @@ void Menu::WorkerOper() {
             break;
         }
         case 2: {
-            if (library.getCount() == 0) {
-                cout << "Library is empty!" << endl;
+            int WorkerCount = library.getCountByType("Worker");
+            if (WorkerCount == 0) {
+                cout << "No worker items found!" << endl;
                 break;
             }
             
-            library.display();
-            cout << "Enter item number to remove: ";
-            int index = getInput(1, library.getCount()) - 1;
+            library.displayByType("Worker");
+            cout << "Enter Worker number to remove (1-" << WorkerCount << "): ";
+            int index = getInput(1, WorkerCount);
             
             try {
-                library.removeItem(index);
-                cout << "Item removed successfully!" << endl;
+                library.removeItemByType(index, "Worker");
+                cout << "Worker removed successfully!" << endl;
             } catch (const exception& e) {
-                cout << "Error: " << e.what() << endl;
+                cout << "Error" << endl;
             }
             break;
         }
         case 3:
-            library.display();
+            library.displayByType("Worker");
             break;
     }
 }
@@ -182,33 +184,78 @@ void Menu::VehicleOper() {
             break;
         }
         case 2: {
-            if (library.getCount() == 0) {
-                cout << "Library is empty!" << endl;
+            int VehicleCount = library.getCountByType("Vehicle");
+            if (VehicleCount == 0) {
+                cout << "No vehicle items found!" << endl;
                 break;
             }
             
-            library.display();
-            cout << "Enter item number to remove: ";
-            int index = getInput(1, library.getCount()) - 1;
+            library.displayByType("Vehicle");
+            cout << "Enter Vehicle number to remove (1-" << VehicleCount << "): ";
+            int index = getInput(1, VehicleCount);
             
             try {
-                library.removeItem(index);
-                cout << "Item removed successfully!" << endl;
+                library.removeItemByType(index, "Vehicle");
+                cout << "Vehicle removed successfully!" << endl;
             } catch (const exception& e) {
-                cout << "Error: " << e.what() << endl;
+                cout << "Error" << endl;
             }
             break;
         }
         case 3:
+            library.displayByType("Vehicle");
             break;
     }
 }
 
 void Menu::SearchOper() {
+    system("cls");
+    cout << "=== SEARCH IN LIBRARY ===" << endl;
+    cout << "Enter search term: ";
+    string term;
+    getline(cin, term);
+    
+    if (term.empty()) {
+        cout << "Search term cannot be empty!" << endl;
+        return;
+    }
+    
+    library.find(term);
 }
 
 void Menu::FileOper() {
-
+    system("cls");
+    cout << "=== FILE OPERATIONS ===" << endl;
+    cout << "1. Save to file" << endl;
+    cout << "2. Load from file" << endl;
+    cout << "0. Back to Main Menu" << endl;
+    
+    int choice = getInput(0, 2);
+    
+    switch (choice) {
+        case 1: {
+            string filename = "SData.txt";
+            
+            try {
+                library.Save(filename);
+                cout << "Data saved successfully!" << endl;
+            } catch (const exception& e) {
+                cout << "Error saving: " << e.what() << endl;
+            }
+            break;
+        }
+        case 2: {
+            string filename = "SData.txt";
+            
+            try {
+                library.Load(filename);
+                cout << "Data loaded successfully!" << endl;
+            } catch (const exception& e) {
+                cout << "Error loading: " << e.what() << endl;
+            }
+            break;
+        }
+    }
 }
 
 void Menu::enter() {
