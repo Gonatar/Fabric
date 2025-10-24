@@ -28,10 +28,6 @@ void Vehicle::displayInfo() const {
     cout << "  State Number: " << stateNumber << endl;
 }
 
-void Vehicle::use() const {
-    cout << "Using vehicle: " << brand << " " << model << " with license plate: " << stateNumber << endl;
-}
-
 FabricItem* Vehicle::clone() const {
     return new Vehicle(*this);
 }

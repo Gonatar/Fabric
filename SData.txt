@@ -1,0 +1,21 @@
+[Furniture]
+Conference Table
+Table
+80,200,90
+Brown
+Wood
+25000
+---
+[Worker]
+Sarah Johnson
+Accountant
+48000
+456 Oak Ave, Boston, MA 02115
++1-555-0102
+---
+[Vehicle]
+Sarah car
+Toyota
+Camry
+A424BC
+---

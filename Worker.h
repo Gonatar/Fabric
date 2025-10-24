@@ -19,7 +19,6 @@ public:
     virtual ~Worker();
     
     virtual void displayInfo() const override;
-    virtual void use() const override;
     virtual FabricItem* clone() const override;
     
     string getPost() const;
@@ -33,4 +32,4 @@ public:
     void setPhoneNumber(const string& phoneNumber);
 };
 
-#endif // WORKER_H
+#endif

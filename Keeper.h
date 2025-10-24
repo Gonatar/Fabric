@@ -5,6 +5,7 @@
 #include "Furniture.h"
 #include "Worker.h"
 #include "Vehicle.h"
+#include "Exceptions.h"
 
 class Keeper{
     private:
@@ -23,9 +24,12 @@ class Keeper{
 
     void removeItem(int index);
     void removeItemByType(int index, const string& type);
+
     void displayAll() const;
     void displayByType(const string& type) const;
+
     void find(const string& name) const;
+
     int getCount() const;
     int getCountByType(const string& type) const;
 

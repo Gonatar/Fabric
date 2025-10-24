@@ -13,6 +13,11 @@ private:
     void VehicleOper();
     void SearchOper();
     void FileOper();
+    void DeleteOper();
+    void EditOper();
+    void editFurniture(Furniture* furniture);
+    void editWorker(Worker* worker);
+    void editVehicle(Vehicle* vehicle);
     
     void enter();
     int getInput(int min, int max);

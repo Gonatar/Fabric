@@ -22,7 +22,6 @@ class Furniture: public FabricItem{
     virtual ~Furniture();
     
     virtual void displayInfo() const override;
-    virtual void use() const override;
     virtual FabricItem* clone() const override;
     
     string getType() const;
@@ -40,4 +39,4 @@ class Furniture: public FabricItem{
     void setCost(int cost);
 };
 
-#endif // FURNITURE_H
+#endif

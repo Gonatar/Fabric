@@ -17,7 +17,6 @@ class Vehicle: public FabricItem{
     virtual ~Vehicle();
     
     virtual void displayInfo() const override;
-    virtual void use() const override;
     virtual FabricItem* clone() const override;
 
     string getBrand() const;
@@ -29,4 +28,4 @@ class Vehicle: public FabricItem{
     void setStateNumber(const string& stateNumber);
 };
 
-#endif // VEHICLE_H
+#endif

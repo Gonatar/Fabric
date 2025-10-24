@@ -12,7 +12,7 @@ Keeper::Keeper(const Keeper& other)
     {
         items[i] = other.items[i]->clone();
     }
-    cout << "LibraryManager copy constructor called" << endl;
+    cout << "Keeper copy constructor called" << endl;
 }
 
 Keeper:: ~Keeper(){
@@ -24,8 +24,18 @@ Keeper:: ~Keeper(){
 }
 
 void Keeper::domExpansion() {
+    if (capacity > 999999) {
+        throw MemoryException("Capacity too large: " + to_string(capacity));
+    }
+    
     capacity *= 2;
-    FabricItem** newItems = new FabricItem*[capacity];
+    FabricItem** newItems = nullptr;
+    
+    try {
+        newItems = new FabricItem*[capacity];
+    } catch (const bad_alloc& e) {
+        throw MemoryException("Failed to allocate memory for expansion: " + string(e.what()));
+    }
     
     for (int i = 0; i < count; i++) {
         newItems[i] = items[i];
@@ -37,8 +47,16 @@ void Keeper::domExpansion() {
 }
 
 void Keeper::addItem(FabricItem* item) {
+    if (item == nullptr) {
+        throw KeeperException("Attempt to add null item");
+    }
+    
     if (count >= capacity) {
-        domExpansion();
+        try {
+            domExpansion();
+        } catch (const MemoryException& e) {
+            throw KeeperException("Failed to add item - memory expansion failed: " + string(e.what()));
+        }
     }
     
     items[count] = item;
@@ -48,7 +66,7 @@ void Keeper::addItem(FabricItem* item) {
 
 void Keeper::removeItem(int index) {
     if (index < 0 || index >= count) {
-        throw out_of_range("Invalid index: " + to_string(index));
+        throw ItemNotFoundException("Invalid index: " + to_string(index) + ". Total items: " + to_string(count));
     }
     
     delete items[index];
@@ -62,8 +80,8 @@ void Keeper::removeItem(int index) {
 }
 
 void Keeper::removeItemByType(int Tindex, const string& type) {
-    if (Tindex < 0 || Tindex >= count) {
-        throw out_of_range("Invalid index: " + to_string(Tindex));
+    if (Tindex < 0 || Tindex > count) {
+        throw InvalidInputException("Index cannot be negative: " + to_string(Tindex));
     }
     
     int currentIndex = 0;
@@ -76,7 +94,7 @@ void Keeper::removeItemByType(int Tindex, const string& type) {
             }
         }
     }
-    throw out_of_range("Index not found for type: " + type);
+    throw ItemNotFoundException("Index " + to_string(Tindex) + " not found for type: " + type);
 }
 
 void Keeper::displayAll() const {
@@ -94,8 +112,7 @@ void Keeper::displayAll() const {
 
 void Keeper::displayByType(const string& type) const {
     if (count == 0) {
-        cout << "Library is empty." << endl;
-        return;
+        throw ItemNotFoundException("Library is empty. No items to display.");
     }
     
     cout << "\n=== " << type << endl;
@@ -145,7 +162,7 @@ int Keeper::getCountByType(const string& type) const {
 
 void Keeper::Save(const string& filename) const {
     ofstream fout(filename);
-    if (!fout) throw runtime_error("Cannot open file: " + filename);
+    if (!fout) throw FileOperationException("Cannot open file for writing: " + filename);;
     
     for (int i = 0; i < count; i++) {
         string type = string(typeid(*items[i]).name() + 1);
@@ -173,7 +190,7 @@ void Keeper::Save(const string& filename) const {
             fout << v->getModel() << endl;
             fout << v->getStateNumber() << endl;
         }
-        fout << "---" << endl; // разделитель между объектами
+        fout << "---" << endl;
     }
     
     fout.close();
@@ -182,18 +199,23 @@ void Keeper::Save(const string& filename) const {
 
 void Keeper::Load(const string& filename)  {
     ifstream fin(filename);
-    if (!fin) throw runtime_error("Cannot open file: " + filename);
+    if (!fin) throw FileOperationException("Cannot open file for reading: " + filename);
     
-    // Очищаем текущие данные
-    for (int i = 0; i < count; i++) delete items[i];
+    for (int i = 0; i < count; i++) {
+        delete items[i];
+    }
+    delete[] items;
+
+    capacity = 10;
     count = 0;
+    items = new FabricItem*[capacity];
     
     string line;
     while (getline(fin, line)) {
         if (line.empty()) continue;
         
         if (line[0] == '[') {
-            string type = line.substr(1, line.size() - 2); // убираем []
+            string type = line.substr(1, line.size() - 2);
             
             getline(fin, line);
             string name = line;
@@ -204,7 +226,7 @@ void Keeper::Load(const string& filename)  {
                 
                 getline(fin, furnitureType);
                 
-                getline(fin, line); // размеры
+                getline(fin, line);
                 sscanf(line.c_str(), "%d,%d,%d", &height, &width, &depth);
                 
                 getline(fin, color);
@@ -238,7 +260,7 @@ void Keeper::Load(const string& filename)  {
                 addItem(new Vehicle(name, brand, model, stateNumber));
             }
             
-            getline(fin, line); // пропускаем "---"
+            getline(fin, line);
         }
     }
     
@@ -248,7 +270,7 @@ void Keeper::Load(const string& filename)  {
 
 FabricItem* Keeper::operator[](int index) {
     if (index < 0 || index >= count) {
-        throw out_of_range("Index out of range");
+        throw ItemNotFoundException("Index " + to_string(index) + " out of range. Valid range: 0-" + to_string(count-1));
     }
     return items[index];
 }

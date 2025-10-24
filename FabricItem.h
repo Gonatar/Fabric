@@ -19,7 +19,6 @@ class FabricItem {
     virtual ~FabricItem();
 
     virtual void displayInfo() const = 0;
-    virtual void use() const = 0;
 
     string getName() const;
     void setName(const string& name);

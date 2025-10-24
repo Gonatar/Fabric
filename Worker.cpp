@@ -32,10 +32,6 @@ void Worker::displayInfo() const {
     cout << "  Phone: " << phoneNumber << endl;
 }
 
-void Worker::use() const {
-    cout << "Worker " << name << " is performing duties: " << post << endl;
-}
-
 FabricItem* Worker::clone() const {
     return new Worker(*this);
 }

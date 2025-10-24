@@ -33,10 +33,6 @@ void Furniture::displayInfo() const {
     cout << "  Cost: " << cost << " rub" << endl;
 }
 
-void Furniture::use() const {
-    cout << "Using furniture: " << name << " - " << type << endl;
-}
-
 FabricItem* Furniture::clone() const {
     return new Furniture(*this);
 }
